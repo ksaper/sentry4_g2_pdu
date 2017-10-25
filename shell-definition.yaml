@@ -1,0 +1,76 @@
+tosca_definitions_version: tosca_simple_yaml_1_0
+
+metadata:
+  template_name: Sentry4G2Pdu
+  template_author: ksaper
+  template_version: 0.1.12
+  template_icon: shell-icon.png
+
+description: >
+  TOSCA based PDU shell
+
+imports:
+  - cloudshell_standard: cloudshell_pdu_standard_2_0_1.yaml
+
+node_types:
+
+  vendor.switch.Sentry4G2Pdu:
+    derived_from: cloudshell.nodes.PDU
+    #properties:
+    #  my_property:
+    #    type: string          # optional values: string, integer, float, boolean, cloudshell.datatypes.Password
+    #    default: fast
+    #    description: Some attribute description
+    #    constraints:
+    #      - valid_values: [fast, slow]
+    properties:
+      Serial Number:
+        type: string
+        description: Items Factory Serial Number
+        tags: [setting, configuration]
+      Firmware Version:
+        type: string
+        description: Current Firmware on the device
+        tags: [setting, configuration]
+      Hardware Details:
+        type: string
+        description: Short desription of the hardware configuration for this device
+    capabilities:
+      auto_discovery_capability:
+        type: cloudshell.capabilities.AutoDiscovery
+        properties:        
+          enable_auto_discovery:
+            type: boolean
+            default: true
+          auto_discovery_description:
+            type: string
+            default: Describe the auto discovery
+          inventory_description:
+            type: string
+            default: Describe the resource shell template
+          User:
+            type: string
+          Password:
+            type: ccloudshell.datatypes.Password
+          SNMP Version:
+            type: string
+            default: v2c
+          SNMP Read Community:
+            type: string
+            default: public
+          SNMP Write Community:
+            type: string
+            default: public
+          SNMP V3 User:
+            type: string
+          SNMP V3 Private Key:
+            type: string
+          SNMP V3 Password:
+            type: cloudshell.datatypes.Password
+    artifacts:
+      icon:
+        file: shell-icon.png
+        type: tosca.artifacts.File
+      driver:
+        file: Sentry4G2PduDriver.zip
+        type: tosca.artifacts.File
