@@ -5,10 +5,10 @@ from data_model import *
 
 
 class PmPduAutoloader:
-    def __init__(self, context):
+    def __init__(self, context, snmp_read, snmp_write):
         self.context = context
         self.logger = LogHelper.get_logger(self.context)
-        self.snmp_handler = SnmpHandler(self.context).get_raw_handler('get')
+        self.snmp_handler = SnmpHandler(self.context, snmp_read, snmp_write).get_raw_handler('get')
         self.resource = Sentry4G2Pdu.create_from_context(context)
 
     def autoload(self):

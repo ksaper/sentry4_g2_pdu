@@ -41,7 +41,13 @@ class SentryPduDriver (ResourceDriverInterface):
         :param ResourceCommandContext context:
         :return:
         """
-        handler = PmPduHandler(context)
+        resource = Sentry4G2Pdu.create_from_context(context)
+        read = resource.snmp_read_community
+        write = resource.snmp_write_community
+        handler = PmPduHandler(context,
+                               self._decrypt_password(context, read),
+                               self._decrypt_password(context, write)
+                               )
 
         return handler.get_inventory()
 

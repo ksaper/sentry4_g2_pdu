@@ -14,11 +14,13 @@ class PmPduHandler:
 
     def __init__(self, context, snmp_read, snmp_write):
         self.context = context
+        self.snmp_read = snmp_read
+        self.snmp_write = snmp_write
         self.logger = LogHelper.get_logger(self.context)
-        self.snmp_handler = SnmpHandler(self.context, snmp_read, snmp_write)
+        self.snmp_handler = SnmpHandler(self.context, self.snmp_read, self.snmp_write)
 
     def get_inventory(self):
-        autoloader = PmPduAutoloader(self.context)
+        autoloader = PmPduAutoloader(self.context, self.snmp_read, self.snmp_write)
 
         return autoloader.autoload()
 
@@ -35,6 +37,7 @@ class PmPduHandler:
             self.logger.info("Powering on port %s" % raw_port)
             self.snmp_handler.set(ObjectIdentity('Sentry4-MIB', 'st4OutletControlAction', port.port_number, port.pdu_number, port.outlet_number),
                                   Integer(1))
+
 
     def power_off(self, port_list):
         self.logger.info("Power off called for ports %s" % port_list)
