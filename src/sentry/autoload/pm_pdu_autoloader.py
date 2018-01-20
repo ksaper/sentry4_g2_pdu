@@ -10,12 +10,14 @@ class PmPduAutoloader:
         self.logger = LogHelper.get_logger(self.context)
         self.snmp_handler = SnmpHandler(self.context, snmp_read, snmp_write).get_raw_handler('get')
         self.resource = Sentry4G2Pdu.create_from_context(context)
+        self.logger = LogHelper.get_logger(self.context)
 
     def autoload(self):
         rv = AutoLoadDetails(resources=[], attributes=[])
 
         rv.attributes.append(self.makeattr('', 'CS_PDU.Location',
                                            self.snmp_handler.get_property('SNMPv2-MIB', 'sysLocation', 0)))
+
         # rv.attributes.append('', 'CS_PDU.Location', self.snmp_handler.get_property('Sentry4-MIB', 'st4SystemFirmwareVersion', 0)))
         # rv.attributes.append(self.makeattr('', 'Location', self.snmp_handler.get_property('SNMPv2-MIB', 'systemLocation', 0)))
         rv.attributes.append(self.makeattr('', 'CS_PDU.Model',
